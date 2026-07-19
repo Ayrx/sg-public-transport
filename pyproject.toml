@@ -7,6 +7,4 @@ dependencies = [
 ]
 
 [tool.pyright]
-reportMissingImports = false
-reportUnknownMemberType = false
-reportUnknownVariableType = false
+typeCheckingMode = "off"

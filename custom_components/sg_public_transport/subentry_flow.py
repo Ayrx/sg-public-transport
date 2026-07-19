@@ -16,7 +16,7 @@ BUS_STOP_CONFIG_SCHEMA: vol.Schema = vol.Schema(
     {vol.Required(SUBENTRY_CONF_BUS_STOP_CODE): str}
 )
 
-class BusServiceSubEntryFlowHandler(ConfigSubentryFlow):
+class BusStopSubEntryFlowHandler(ConfigSubentryFlow):
     """Subentry flow for adding a new bus stop."""
 
     async def async_step_user(

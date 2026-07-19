@@ -4,11 +4,15 @@ from typing import Any
 
 import voluptuous as vol
 
+from homeassistant.core import callback
 from homeassistant.const import CONF_API_KEY, CONF_SCAN_INTERVAL
 from homeassistant.config_entries import (
     SOURCE_REAUTH,
     ConfigFlow,
     ConfigFlowResult,
+    ConfigEntry,
+    ConfigSubentryFlow,
+
 )
 from homeassistant.helpers.selector import (
     TextSelector,
@@ -16,7 +20,8 @@ from homeassistant.helpers.selector import (
     TextSelectorType,
 )
 
-from .const import DOMAIN, MIN_SCAN_INTERVAL_SECONDS
+from .const import DOMAIN, MIN_SCAN_INTERVAL_SECONDS, SUBENTRY_TYPE_BUS_STOP
+from .subentry_flow import BusStopSubEntryFlowHandler
 
 def get_config_schema(
     api_key: str | None = None, scan_interval: int = MIN_SCAN_INTERVAL_SECONDS
@@ -36,6 +41,17 @@ def get_config_schema(
     )
 
 class SgPublicTransportConfigFlow(ConfigFlow, domain=DOMAIN):
+
+    @classmethod
+    @callback
+    def async_get_supported_subentry_types(
+        cls, config_entry: ConfigEntry
+    ) -> dict[str, type[ConfigSubentryFlow]]:
+        """Return subentries supported by this integration."""
+        return {
+            SUBENTRY_TYPE_BUS_STOP: BusStopSubEntryFlowHandler,
+        }
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:

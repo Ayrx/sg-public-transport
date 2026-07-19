@@ -1,0 +1,14 @@
+{
+  "domain": "sg_public_transport",
+  "name": "SG Public Transport",
+  "codeowners": [
+    "@Ayrx"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/Ayrx/sg-public-transport",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/hanwg/sg-bus-arrivals/issues",
+  "quality_scale": "bronze",
+  "single_config_entry": true,
+  "version": "v0.0.1"
+}

@@ -1,0 +1,10 @@
+[project]
+name = "sg-public-transport"
+version = "0.0.1"
+dependencies = [
+    "homeassistant>=2026.2.3",
+    "voluptuous>=0.15.2",
+]
+
+[tool.pyright]
+reportMissingImports = false

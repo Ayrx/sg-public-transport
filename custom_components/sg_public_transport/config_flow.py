@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any
 
 import voluptuous as vol
@@ -16,18 +18,22 @@ from homeassistant.helpers.selector import (
 
 from .const import DOMAIN, MIN_SCAN_INTERVAL_SECONDS
 
-config_schema = vol.Schema(
-    {
-        vol.Required(CONF_API_KEY, default=None): TextSelector(
-            TextSelectorConfig(
-                type=TextSelectorType.PASSWORD, autocomplete="current-password"
-            )
-        ),
-        vol.Required(CONF_SCAN_INTERVAL, default=MIN_SCAN_INTERVAL_SECONDS): vol.All(
-            vol.Coerce(int), vol.Range(min=MIN_SCAN_INTERVAL_SECONDS)
-        ),
-    }
-)
+def get_config_schema(
+    api_key: str | None = None, scan_interval: int = MIN_SCAN_INTERVAL_SECONDS
+) -> vol.Schema:
+    """Return the schema for the config flow."""
+    return vol.Schema(
+        {
+            vol.Required(CONF_API_KEY, default=api_key): TextSelector(
+                TextSelectorConfig(
+                    type=TextSelectorType.PASSWORD, autocomplete="current-password"
+                )
+            ),
+            vol.Required(CONF_SCAN_INTERVAL, default=scan_interval): vol.All(
+                vol.Coerce(int), vol.Range(min=MIN_SCAN_INTERVAL_SECONDS)
+            ),
+        }
+    )
 
 class SgPublicTransportConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_user(
@@ -42,5 +48,18 @@ class SgPublicTransportConfigFlow(ConfigFlow, domain=DOMAIN):
             )
 
         return self.async_show_form(
-            step_id="user", data_schema=config_schema, errors=errors
+            step_id="user", data_schema=get_config_schema(), errors=errors
+        )
+
+    async def async_step_reconfigure(self, user_input: dict[str, Any] | None = None):
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            return self.async_update_reload_and_abort(
+                self._get_reconfigure_entry(), data_updates=user_input
+            )
+
+        api_key: str = self._get_reconfigure_entry().data[CONF_API_KEY]
+        scan_interval: int = self._get_reconfigure_entry().data[CONF_SCAN_INTERVAL]
+        return self.async_show_form(
+            step_id="user", data_schema=get_config_schema(api_key, scan_interval), errors=errors
         )

@@ -13,5 +13,37 @@
         "description": "To get your API account key, you will need to [request for LTA DataMall access](https://datamall.lta.gov.sg/content/datamall/en/request-for-api.html)."
       }
     }
+  },
+  "entity": {
+    "sensor": {
+      "bus_type": {
+        "name": "Bus type {index}",
+        "state": {
+          "single_deck": "Single deck",
+          "double_deck": "Double deck",
+          "bendy": "Bendy"
+        }
+      },
+      "arrival": {
+        "name": "Estimated arrival {index}"
+      },
+      "load": {
+        "name": "Load {index}",
+        "state": {
+          "seats_available": "Seats available",
+          "standing_available": "Standing available",
+          "limited_standing": "Limited standing"
+        }
+      },
+      "operator": {
+        "name": "Operator",
+        "state": {
+          "sbst": "SBS Transit",
+          "smrt": "SMRT Buses",
+          "tts": "Tower Transit Singapore",
+          "gas": "Go-Ahead Singapore"
+        }
+      }
+    }
   }
 }

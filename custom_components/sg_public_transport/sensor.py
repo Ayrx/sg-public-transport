@@ -117,12 +117,11 @@ async def async_setup_entry(
         entities: list[BusServiceSensor] = []
         for service_no in STUB_BUS_SERVICES:
             for description in SENSOR_DESCRIPTIONS:
-                for index in range(description.cardinality):
-                    entities.append(
-                        BusServiceSensor(
-                            bus_stop_code, service_no, description, index
-                        )
+                entities.append(
+                    BusServiceSensor(
+                        bus_stop_code, service_no, description, 0 # sub out 0 for a real index...
                     )
+                )
 
         async_add_entities(entities, config_subentry_id=subentry.subentry_id)
 
